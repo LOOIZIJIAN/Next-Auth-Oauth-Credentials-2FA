@@ -40,10 +40,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }
   },
   callbacks: {
-    async signIn({ user }) {
-      // if(!user.id) return false;
+    async signIn({ user, account }) {
       const existingUser = await getUserById(user.id as string);
-      // if(!existingUser || existingUser?.emailVerified) return false;
+      if(account?.provider !== "credentials") return true;
+      if(!existingUser || !existingUser?.emailVerified) return false;
       return true;
     },
     async jwt({token}) {    
