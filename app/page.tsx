@@ -11,8 +11,8 @@ export default function Home() {
   return (
     <main className="flex h-full flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-100 to-blue-300">
       <div className="space-y-6 text-center">
-        <h1 className={cn("text-6xl font-semibold text-white drop-shadow-md", font.className)}>🔐Auth</h1>
-        <p className="text-white text-lg">Simple Authentication Service</p>
+        <h1 className={cn("text-7xl font-semibold text-white drop-shadow-md", font.className)}>🐔Chicken</h1>
+        <p className="text-white text-xl">Simple Order Service</p>
         <div>
           <LoginButton>
               <Button variant={"secondary"} className="size-lg">Sign in</Button>
