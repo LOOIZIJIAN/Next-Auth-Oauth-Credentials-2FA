@@ -19,7 +19,6 @@ export const getTwoFactorTokenbyEmail = async (email:string)=>{
     const twoFactorToken = await db.twoFactorToken.findFirst({
       where:{ email }
     })
-  
     return twoFactorToken;
   } catch (error) {
     return null;
