@@ -4,17 +4,22 @@ import authConfig from "./auth.config"
 import { db } from "./lib/db"
 import { getUserById } from "./data/user"
 import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation"
+import { UserRole } from "@prisma/client"
 
+export type ExtendedUser = DefaultSession["user"] & {
+  role: UserRole
+  isTwoFactorEnabled: boolean
+}
 declare module "next-auth" {
   /**
    * Returned by `auth`, `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
   interface Session {
-    user: {
+    user: ExtendedUser
       /** The user's postal address. */
       // name: string,
       // email: string,
-      role: string,
+      
       // image: string,
       // id: string,
       /**
@@ -23,10 +28,9 @@ declare module "next-auth" {
        * with the new ones defined above. To keep the default session user properties,
        * you need to add them back into the newly declared interface.
        */
-    } & DefaultSession["user"]
   }
 }
- 
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: "/auth/login",
@@ -62,6 +66,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const existingUser = await getUserById(token.sub);
       if(!existingUser) return token;
       token.role = existingUser.role;
+      token.isTwofactorEnabled = existingUser.isTwoFactorEnabled;
       return token
     },
     async session({session, token}) {
@@ -69,7 +74,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.id = token.sub
       }
       if(token.role && session.user){
-        session.user.role = token.role as string;
+        session.user.role = token.role as UserRole
+      }
+      if(session.user){
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean
       }
       return session
     },
