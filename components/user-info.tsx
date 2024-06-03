@@ -10,7 +10,6 @@ interface UserInfoProps {
 export const UserInfo = ({ user, label }: UserInfoProps) => {
   return(
     <Card className="w-[600px] shadow-md">
-      {JSON.stringify(user)}
       <CardHeader><p className="text-2xl font-semebold text-center">{label}</p></CardHeader>
       <CardContent className="space-y-4">
         <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">

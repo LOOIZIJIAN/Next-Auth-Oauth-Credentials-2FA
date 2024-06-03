@@ -6,7 +6,6 @@ interface ProtectedLayoutProps {
 }
 const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
   const session = await auth();
-  console.log("FUCK:"+JSON.stringify(session));
   return (
     <SessionProvider session={session}>
       <div className="w-full h-full flex flex-col gap-y-10 items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-100 to-blue-600">
