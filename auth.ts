@@ -5,10 +5,12 @@ import { db } from "./lib/db"
 import { getUserById } from "./data/user"
 import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation"
 import { UserRole } from "@prisma/client"
+import { getAccountByUserId } from "./data/account"
 
 export type ExtendedUser = DefaultSession["user"] & {
   role: UserRole
   isTwoFactorEnabled: boolean
+  isOAuth: boolean
 }
 declare module "next-auth" {
   /**
@@ -64,10 +66,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({token}) {    
       if (!token.sub) return token;
       const existingUser = await getUserById(token.sub);
+      const existingAccount = await getAccountByUserId(token.sub);
       if(!existingUser) return token;
       token.role = existingUser.role;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
-      // console.log("TOKEN:"+JSON.stringify(token));
+      token.isOAuth = !!existingAccount
+      token.email = existingUser.email;
+      token.name = existingUser.name;
       return token
     },
     async session({session, token}) {
@@ -79,8 +84,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       if(session.user){
         session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean
+        session.user.email = token.email as string
+        session.user.name = token.name as string
+        session.user.isOAuth = token.isOAuth as boolean
       }
-      // console.log("SESSION:"+JSON.stringify(session));
       return session
     },
   },
