@@ -46,6 +46,7 @@ const SettingsPage = () => {
       password: undefined,
       newPassword: undefined,
       role: user?.role || undefined,
+      isTwoFactorEnabled: user?.isTwoFactorEnabled || false,
     },
   });
   const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
@@ -144,6 +145,8 @@ const SettingsPage = () => {
                       </FormItem>
                     )}
                   ></FormField>
+                    </>
+              )}
                   <FormField
                     control={form.control}
                     name="role"
@@ -171,6 +174,8 @@ const SettingsPage = () => {
                       </FormItem>
                     )}
                   ></FormField>
+                  {user?.isOAuth === false && (
+                    <>
                   <FormField
                     control={form.control}
                     name="password"
