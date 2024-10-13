@@ -17,7 +17,7 @@ import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { login } from "@/actions/login";
-import { useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
@@ -64,7 +64,8 @@ export const LoginForm = () => {
   };
 
   return (
-    <CardWrapper
+    <Suspense>
+      <CardWrapper
       headerLabel="Welcome back!"
       backButtonHref="/auth/register"
       backButtonlabel="Don't have an account? Register here!"
@@ -151,5 +152,6 @@ export const LoginForm = () => {
         </form>
       </Form>
     </CardWrapper>
+    </Suspense>
   );
 };

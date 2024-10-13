@@ -16,7 +16,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { newPassword } from "@/actions/new-password";
 
@@ -46,7 +46,8 @@ export const NewPasswordForm = () => {
   }
 
   return ( 
-    <CardWrapper
+   <Suspense>
+     <CardWrapper
       headerLabel="Enter a new password"
       backButtonHref="/auth/login"
       backButtonlabel="Back to login"
@@ -72,6 +73,7 @@ export const NewPasswordForm = () => {
         </form>
       </Form>
     </CardWrapper>
+   </Suspense>
    );
 }
  
